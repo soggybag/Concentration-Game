@@ -7,39 +7,79 @@
 //
 
 import SpriteKit
+import GameplayKit
 
-class GameScene: SKScene {
-    override func didMoveToView(view: SKView) {
-        /* Setup your scene here */
-        let myLabel = SKLabelNode(fontNamed:"Chalkduster")
-        myLabel.text = "Hello, World!"
-        myLabel.fontSize = 45
-        myLabel.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame))
-        
-        self.addChild(myLabel)
+class GameScene: SKScene, GameTileDelegate {
+    
+    var popupTime = 0.85
+    
+    let numberOfTiles = 16
+    var tiles = [GameTile]()
+    
+    var slots = [WhackSlot]()
+    
+    func createSlotAt(pos: CGPoint) {
+        let slot = WhackSlot()
+        slot.configureAtPosition(pos)
+        addChild(slot)
+        slots.append(slot)
     }
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-       /* Called when a touch begins */
-        
-        for touch in touches {
-            let location = touch.locationInNode(self)
-            
-            let sprite = SKSpriteNode(imageNamed:"Spaceship")
-            
-            sprite.xScale = 0.5
-            sprite.yScale = 0.5
-            sprite.position = location
-            
-            let action = SKAction.rotateByAngle(CGFloat(M_PI), duration:1)
-            
-            sprite.runAction(SKAction.repeatActionForever(action))
-            
-            self.addChild(sprite)
+    
+    func didTouchTile(tile: GameTile) {
+        tile.show()
+    }
+    
+    
+    func shuffleGameTiles() {
+        let values = [Int](0 ..< 26)
+        let valuesShuffled = GKRandomSource.sharedRandom().arrayByShufflingObjectsInArray(values) as! [Int]
+        var pairs = [Int]()
+        for i in 0 ..< 8 {
+            pairs.append(valuesShuffled[i])
+            pairs.append(valuesShuffled[i])
         }
+        let pairsShuffled = GKRandomSource.sharedRandom().arrayByShufflingObjectsInArray(pairs) as! [Int]
+        
+        for i in 0 ..< tiles.count {
+            tiles[i].value = pairsShuffled[i]
+        }
+    }
+    
+    
+    override func didMoveToView(view: SKView) {
+        /* Setup your scene here */
+        
+        
+        // createSlotAt(CGPoint(x: 200, y: 500))
+        /*let test = GameTile2()
+        addChild(test)
+        test.position.x = 200
+        test.position.y = 500*/
+        
+        
+        for n in 0 ..< numberOfTiles {
+            let spacing = view.frame.size.width / 4
+            let offset = spacing / 2
+            
+            let x = spacing * CGFloat(n % 4) + offset
+            let y = spacing * CGFloat(floor(Double(n) / 4)) + offset
+            
+            let tile = GameTile()
+            tile.position = CGPoint(x: x, y: y)
+            tile.zPosition = CGFloat(n)
+            tile.delegate = self
+            addChild(tile)
+            tiles.append(tile)
+        }
+        
+        shuffleGameTiles()
     }
    
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
     }
 }
+
+
+
