@@ -37,4 +37,13 @@ SKCropNode acts as a mask for it's child nodes. Use to create masking effects. T
 matching images to slide up into view as if in a window. 
 
 The GameSquare class makes use of SKCropNode. GameSquare is an SKNode containing a cropNode, sprite, and tapNode. _I had some 
-trouble_
+trouble with SKCropNode. Specifically I had some strange behavior when GameSquare subclassed SKCropNode. Making cropNode a child of an SKNode worked well. I also had issues receiving touch events on objects outside of the masked areas. To solve this I created "tapNode", an SKSpriteNode, which covers the tappable area._
+
+GameSquare is structured as a node with several child nodes
+    GameSquare
+        cropNode
+            maskNode *
+            sprite
+        tapNode
+
+![Screenshot][Simulator Screen Shot May 19, 2016, 9.50.07 AM.png]
