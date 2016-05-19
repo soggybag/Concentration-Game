@@ -11,7 +11,14 @@ import SpriteKit
 class Button: SKNode {
     var defaultbutton: SKSpriteNode
     var activeButton: SKSpriteNode
+    var label = SKLabelNode()
     var action: () -> Void
+    
+    var title: String = "" {
+        didSet {
+            label.text = title
+        }
+    }
     
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -48,18 +55,21 @@ class Button: SKNode {
     }
     
     
-    init(defaultImage: String, activeImage: String, buttonAction: () -> Void) {
-        defaultbutton = SKSpriteNode(imageNamed: defaultImage)
-        activeButton = SKSpriteNode(imageNamed: activeImage)
+    init(defaultImage: SKSpriteNode, activeImage: SKSpriteNode, buttonAction: () -> Void) {
+        defaultbutton = defaultImage
+        activeButton = activeImage
         
         activeButton.hidden = true
         action = buttonAction
+        
+        label.verticalAlignmentMode = .Center
         
         super.init()
         
         userInteractionEnabled = true
         addChild(defaultbutton)
         addChild(activeButton)
+        addChild(label)
     }
     
     required init?(coder aDecoder: NSCoder) {
