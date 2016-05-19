@@ -46,4 +46,4 @@ GameSquare is structured as a node with several child nodes
             sprite
         tapNode
 
-![Screenshot][Simulator Screen Shot May 19, 2016, 9.50.07 AM.png]
+![Screenshot](Simulator Screen Shot May 19, 2016, 9.50.07 AM.png)
