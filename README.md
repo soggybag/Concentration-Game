@@ -46,4 +46,17 @@ GameSquare is structured as a node with several child nodes
             sprite
         tapNode
 
+##SKShapeNode
+
+To acheive a rounded rectangle I use SKShapeNode. This node type has a path property to set it's shape. I found using UIBezierPath the easiest way to create paths. UIBezierPath has many helpful initializers for creating standard shapes like ovals, rectangles, and rounded rectangles. 
+
+I used SKShapeNode as the maskNode for cropNode. 
+
+    let rect = CGRect(x: squareSize / -2, y: squareSize / -2, width: squareSize, height: squareSize)
+    let path = UIBezierPath(roundedRect: rect, cornerRadius: 20)
+    let masknode = SKShapeNode(path: path.CGPath)
+    masknode.fillColor = color
+
+You can set the fillColor, strokeColor, and lineWidth to easily generate a shape with a stroke and fill. 
+
 ![Screenshot](Simulator Screen Shot May 19, 2016, 9.50.07 AM.png)
