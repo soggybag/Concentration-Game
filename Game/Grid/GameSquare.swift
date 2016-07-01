@@ -89,6 +89,8 @@ class GameSquare: SKNode {
         let path = UIBezierPath(roundedRect: rect, cornerRadius: 20)
         let masknode = SKShapeNode(path: path.CGPath)
         masknode.fillColor = color
+        masknode.strokeColor = color
+        masknode.lineWidth = 0
         masknode.name = "cropNode"
         return masknode
     }
@@ -108,6 +110,7 @@ class GameSquare: SKNode {
         addChild(cropNode)
         
         let tapNode = maskNode(SKColor(white: 1, alpha: 0.5))
+        tapNode.zPosition = -1
         tapNode.name = "tapNode"
         addChild(tapNode)
     }
